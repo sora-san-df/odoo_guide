@@ -13,6 +13,11 @@
                         <group>
                             <field name="name"/>
                         </group>
+
+                        <group>
+                            <field name="property_type_id" string="Property Type"/>
+                        </group>
+
                         <group>
                             <field name="postcode"/>
                         </group>
@@ -61,8 +66,20 @@
                                    <field name="garden_orientation"/>
                                 </group>
                             </page>
+
+                            <page string="Other Info">
+                                <group>
+                                    <field name="sales_person_id" string="Salesman"/>
+                                </group>
+
+                                <group>
+                                    <field name="buyer_person_id" string="Buyer"/>
+                                </group>
+                            </page>
                         </notebook>
+
                     </group>
+                   
                 </sheet>
             </form>
 
