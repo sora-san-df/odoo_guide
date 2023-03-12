@@ -7,7 +7,9 @@
            <form string="testing property">
                 <sheet>
                     <h1>My New House</h1>
-                    
+                    <group>
+                        <field name="property_tag_id" widget="many2many_tags"></field>
+                    </group>
                      <group>
                         <separator/>
                         <group>
@@ -24,6 +26,10 @@
                         <group>
                             <field name="expected_price"/>
                         </group>
+
+                        <group>
+                            <field name="best_price"/>
+                        </group>
                         <group>
                             <field name="date_availability"/>
                         </group>
@@ -31,6 +37,7 @@
                             <field name="selling_price"/>
                         </group>
                         <notebook>
+                        <!-- #Description tab -->
                             <page string="Description">
 
                                 <group>
@@ -65,8 +72,13 @@
                                  <group>
                                    <field name="garden_orientation"/>
                                 </group>
+
+                                <group>
+                                    <field name="total_area"/>
+                                </group>
                             </page>
 
+                            <!-- #Other info tab -->
                             <page string="Other Info">
                                 <group>
                                     <field name="sales_person_id" string="Salesman"/>
@@ -75,6 +87,16 @@
                                 <group>
                                     <field name="buyer_person_id" string="Buyer"/>
                                 </group>
+                            </page>
+
+                            <page string="Offers">
+                                <field name="offers_id">
+                                    <tree string="Channel">
+                                        <field name="price"/>
+                                        <field name="partner_id"/>
+                                        <field name="status"/>
+                                    </tree>
+                                </field>
                             </page>
                         </notebook>
 
