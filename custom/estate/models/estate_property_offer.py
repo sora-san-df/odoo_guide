@@ -14,6 +14,7 @@ class EstatePropertyOffer(models.Model):
          ('price_must_positive', 
           'check( price > 0)', 
           'A property selling must be positive.')]
+    _order = "price desc"
     
     price = fields.Float()
 

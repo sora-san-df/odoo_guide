@@ -14,13 +14,14 @@
                         <!-- properties -->
 
                         <page string="Properties">
-
+                        
                         <field name="property_ids">
-                            <tree string="Channel" >
-                                <field name="name" string="Title"/>
-                                <field name="expected_price" string="Expected Price"/>
-                                <field name="state" string="Status"/>
-                            </tree>
+                                <tree string="Channel" >
+                                    <field name="testing_sequence" widget="handle"/>
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price" string="Expected Price"/>
+                                    <field name="state" string="Status"/>
+                                </tree>
                         </field>
                         </page>
                     </notebook>

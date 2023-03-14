@@ -18,9 +18,12 @@ class EstateProperty(models.Model):
           'check(selling_price > 0)',
           'The selling price should always be grater than 0'
           )]
+    _order = "id desc"
 
-
+   
     name = fields.Char(required=True)
+
+    testing_sequence = fields.Integer(related="property_type_id.sequence")
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
 
@@ -67,9 +70,8 @@ class EstateProperty(models.Model):
 
     #State field
 
-    state = fields.Selection(
-        selection=[('New','New'), ('Offer Received','Offer Received'), ('Offer Accepted','Offer Accepted'), ('Sold','Sold'), ('Canceled','Canceled')],
-        required=True, copy=False, default='New', readonly=True)
+    state = fields.Selection([('New','New'), ('Offer Received','Offer Received'), ('Offer Accepted','Offer Accepted'), ('Sold','Sold'), ('Canceled','Canceled')],
+        required=True, copy=False, default="New",readonly=True)
 
     total_area = fields.Integer(compute="_compute_area")
 

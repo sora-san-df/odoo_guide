@@ -7,6 +7,10 @@ class EstatePropertyType(models.Model):
 
     _description = "This is the description of the estate property type"
 
+    _order = "sequence,name"
+
     name = fields.Char(required=True)
+    
+    sequence = fields.Integer()
 
     property_ids = fields.One2many("estate.property","property_type_id", string="Properties")
