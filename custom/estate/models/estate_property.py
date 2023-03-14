@@ -1,11 +1,23 @@
 from odoo import fields, models, api
 
+from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
 
     _name = "estate.property"
 
     _description = "this is a estate property module"
+
+    _sql_constraints = [
+        ('check_higher', 
+         'check(expected_price > 0)', 
+         'Prices should strictly higher than 0.'),
+
+         ('check_selling_price',
+          'check(selling_price > 0)',
+          'The selling price should always be grater than 0'
+          )]
 
 
     name = fields.Char(required=True)
@@ -57,20 +69,58 @@ class EstateProperty(models.Model):
 
     state = fields.Selection(
         selection=[('New','New'), ('Offer Received','Offer Received'), ('Offer Accepted','Offer Accepted'), ('Sold','Sold'), ('Canceled','Canceled')],
-        required=True, copy=False, default='New')
+        required=True, copy=False, default='New', readonly=True)
 
     total_area = fields.Integer(compute="_compute_area")
 
     best_price = fields.Float(compute="_best_price")
 
+    #Calculate the Area suming living_area and garden_area
     @api.depends("living_area", "garden_area")
     def _compute_area(self):
         for record in self: 
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends("offers_id.price")
+    #Give the best offer for a property
+    @api.depends("offers_id")
     def _best_price(self):
         for record in self: 
-            record.best_price = max(record.offers_id.mapped('price'))
+            if record.offers_id:
+                record.best_price = max(record.offers_id.mapped('price'))
+            else: 
+                record.best_price = 0.0
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden: 
+            self.garden_area = 10
+            self.garden_orientation = 'North'
+        else: 
+            self.garden_area = 0
+            self.garden_orientation = ''
+
+
+    #Logic to the buttons sold and canceled: remember, if it's sold, can be canceled and viceversa
+    def sold_button_test(self):
+        for record in self: 
+
+            if record.state == 'Canceled':
+                raise UserError("Canceled properties sold")
+            else:
+                record.state = 'Sold'
+
+        return True
+    
+    def cancel_button_test(self): 
+        for record in self: 
+
+            if record.state == 'Sold':
+                raise UserError("Sold properties can be cancelled")
+            else:
+                record.state = 'Canceled'
+
+        return True
+
+
 
     
