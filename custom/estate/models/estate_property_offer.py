@@ -18,7 +18,7 @@ class EstatePropertyOffer(models.Model):
     
     price = fields.Float()
 
-    status = fields.Selection(selection=[('Accepted', 'Accepted'), ('Refused','Refused')], copy=False)
+    status = fields.Selection(selection=[('Offer Accepted', 'Offer Accepted'), ('Refused','Refused')], copy=False)
 
     partner_id = fields.Many2one('res.partner', required=True)
 
@@ -29,6 +29,9 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
 
     date_deadline = fields.Date(compute="_date_deadline_func", inverse="_inverse_date_deadline_func")
+
+    property_type_id = fields.Many2one('estate.property.type', related="property_id.property_type_id", store=True)
+
 
 
 
@@ -46,9 +49,9 @@ class EstatePropertyOffer(models.Model):
 
     def offer_confirm(self):
         for record in self:
-                record.status = 'Accepted'
+                record.status = 'Offer Accepted'
 
-        if record.status == 'Accepted':
+        if record.status == 'Offer Accepted':
              #Techincally we set the accepted price to selling price
              record.property_id.selling_price = record.price
 

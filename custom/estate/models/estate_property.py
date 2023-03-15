@@ -70,7 +70,7 @@ class EstateProperty(models.Model):
 
     #State field
 
-    state = fields.Selection([('New','New'), ('Offer Received','Offer Received'), ('Offer Accepted','Offer Accepted'), ('Sold','Sold'), ('Canceled','Canceled')],
+    state = fields.Selection(selection=[('New','New'), ('Offer Received','Offer Received'), ('Offer Accepted','Offer Accepted'), ('Sold','Sold'), ('Canceled','Canceled')],
         required=True, copy=False, default="New",readonly=True)
 
     total_area = fields.Integer(compute="_compute_area")
@@ -101,6 +101,7 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ''
 
+    
 
     #Logic to the buttons sold and canceled: remember, if it's sold, can be canceled and viceversa
     def sold_button_test(self):
@@ -108,8 +109,8 @@ class EstateProperty(models.Model):
 
             if record.state == 'Canceled':
                 raise UserError("Canceled properties sold")
-            else:
-                record.state = 'Sold'
+            
+            record.state = 'Sold'
 
         return True
     
@@ -118,8 +119,8 @@ class EstateProperty(models.Model):
 
             if record.state == 'Sold':
                 raise UserError("Sold properties can be cancelled")
-            else:
-                record.state = 'Canceled'
+            
+            record.state = 'Canceled'
 
         return True
 
