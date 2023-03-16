@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from odoo import models, fields, api 
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -77,6 +77,22 @@ class EstatePropertyOffer(models.Model):
               if comparation == -1: 
                     raise ValidationError("The selling price must be at least 90'%' of the expected price. You should change your expected price to accept this offer")
 
-              
+    #Method that set the state to offer recieved if an offer was made, raise an error if an user create an offer lower than the existing offer.
+    @api.model
+    def create(self, vals):
+
+        price = vals.get('price')
+        if price:
+            existing_offer = self.env['estate.property.offer'].search([('property_id', '=', vals['property_id']), ('price', '>', price)], limit=1)
+            if existing_offer:
+                raise UserError(f"The offer amount should be greater than {existing_offer.price}")
+
+        offer_recived = self.env['estate.property'].browse(vals['property_id'])
+        if offer_recived:
+             offer_recived.write({'state':'Offer Received'})
+
+    
+
+        return super(EstatePropertyOffer, self).create(vals)         
     
     

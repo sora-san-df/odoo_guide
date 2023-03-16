@@ -23,6 +23,8 @@ class EstateProperty(models.Model):
    
     name = fields.Char(required=True)
 
+    
+
     testing_sequence = fields.Integer(related="property_type_id.sequence")
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -108,7 +110,7 @@ class EstateProperty(models.Model):
         for record in self: 
 
             if record.state == 'Canceled':
-                raise UserError("Canceled properties sold")
+                raise UserError("Canceled properties cant be sold")
             
             record.state = 'Sold'
 
@@ -125,5 +127,13 @@ class EstateProperty(models.Model):
         return True
 
 
+    #Python inheritance: delete method to prevent deletion if the state is not New or Cancelled
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_is_new_or_canceled(self):
+        for record in self: 
+            if record.state not in ('New', 'Canceled'):
+                raise UserError('You cannot delete a property if it is not new or canceled')
+
+   
 
     
