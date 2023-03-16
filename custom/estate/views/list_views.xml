@@ -16,5 +16,6 @@
                     <field name="state" optional="hide"/>
                 </tree>
             </field>
+
     </record>
 </odoo>

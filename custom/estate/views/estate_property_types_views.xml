@@ -1,51 +1,30 @@
 <?xml version="1.0"?>
 
 <odoo>
-   <record id="estate_property_type_view_kanban" model="ir.ui.view">
-    <field name="name">estate.property.type.view.kanban</field>
-    <field name="model">estate.property.type</field>
-    <field name="arch" type="xml">
-        <kanban default_group_by="state">
-            <field name="name"/>
-            <field name="property_ids"/>
-            <templates>
-                <t t-name="kanban-box">
-                    <div class="oe_kanban_global_click">
-                        <div class="oe_kanban_card_content">
-                            <p><field name="name"/></p>
-                            <p>Expected Price: <field name="property_id.expected_price"/></p>
-                            <p><field name="state"/></p>
-                        </div>
-                    </div>
-                </t>
-            </templates>
-        </kanban>
-    </field>
-</record>
-
-
-
-            <!-- <form string="Tag property">
+    <record id="estate_property_type_view" model="ir.ui.view">
+        <field name="name">estate.property.type.view</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Tag property">
                 <sheet>
-
                     <field name="name" style="font-size: 24px; font-weight: bold;"/>
                     <button name="%(estate_property_offer_action)d" type="action" context="{'search_default_property_type_id': active_id}" string="testing button"/>
                     <notebook>
-                        
-
                         <page string="Properties">
-                        
-                        <field name="property_ids">
+                            <field name="property_ids">
                                 <tree string="Channel" >
                                     <field name="testing_sequence" widget="handle"/>
                                     <field name="name" string="Title"/>
                                     <field name="expected_price" string="Expected Price"/>
                                     <field name="state" string="Status"/>
-                                    
                                 </tree>
-                        </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>-->
+                            </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+        </field>
+    </record>
 </odoo>
+
+            
